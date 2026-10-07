@@ -8,6 +8,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SidebarFooter } from "./sidebar-footer";
 import Image from "next/image";
+import { WorkspaceSelector } from "./workspace-selector";
 
 interface SidebarProps {
     user: {
@@ -25,11 +26,11 @@ interface SidebarProps {
               stripeCustomerId: string | null;
           }
         | undefined;
-    workspaces?: {
+    workspaces: {
         id: string;
         name: string;
         profileId: string;
-        created_at: Date | null;
+        createdAt: Date | null;
     }[];
 }
 
@@ -104,10 +105,10 @@ export function AppSidebar({ user, subscription, workspaces }: SidebarProps) {
                 </span>
             </Link>
 
-            {/* <WorkspaceSelector
-        workspaces={workspaces}
-        activeWorkspace={activeWorkspace}
-      /> */}
+            <WorkspaceSelector
+                workspaces={workspaces}
+                activeWorkspace={activeWorkspace}
+            />
 
             <Link
                 href={
