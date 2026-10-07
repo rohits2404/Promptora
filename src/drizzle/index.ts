@@ -1,0 +1,22 @@
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
+
+import { relations } from "./relations";
+
+const globalForDb = globalThis as unknown as {
+    conn: postgres.Sql | undefined;
+};
+
+const connectionString = process.env.DATABASE_URL!;
+
+const queryClient =
+    globalForDb.conn ??
+    postgres(connectionString, {
+        prepare: false,
+    });
+
+if (process.env.NODE_ENV !== "production") {
+    globalForDb.conn = queryClient;
+}
+
+export const db = drizzle({ client: queryClient, relations: relations });
