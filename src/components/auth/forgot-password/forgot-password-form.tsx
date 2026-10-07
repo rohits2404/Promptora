@@ -49,15 +49,18 @@ export default function ForgotPasswordForm() {
                 toast.add({
                     title: error.message,
                 });
+
                 return;
             }
 
             toast.add({
                 title: "Password Reset Link Sent To Your Email",
             });
+
             setSent(true);
         } catch (error) {
-            console.error(error);
+            console.error("Password reset error:", error);
+
             toast.add({
                 title: "Something Went Wrong. Please Try Again Later.",
             });
@@ -69,25 +72,30 @@ export default function ForgotPasswordForm() {
             <AuthCard>
                 <div className="space-y-4 text-center">
                     <p className="text-sm text-muted-foreground">
-                        If An Account Exists For
+                        If an account exists for{" "}
                         <span className="font-medium text-foreground">
                             {getValues("email")}
                         </span>
-                        We Sent a Reset Password Link . Check Your Inbox.
+                        , we sent a password reset link to your email. Please
+                        check your inbox.
                     </p>
 
-                    <Button variant={"outline"} className={"w-full"}>
-                        <Link href={"/auth/reset-password"}>
-                            Continue To Reset Password
-                        </Link>
-                    </Button>
+                    {/* Back To Sign In */}
+                    <Link
+                        href="/auth/login"
+                        className="inline-flex h-9 w-full items-center justify-center rounded-xl border border-border bg-background px-4 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                    >
+                        Back To Sign In
+                    </Link>
 
-                    <Button variant={"ghost"} className={"w-full"}>
-                        <Link href={"/auth/login"}>
-                            <ArrowLeft className="size-4" />
-                            Back To Sign In
-                        </Link>
-                    </Button>
+                    {/* Try Another Email */}
+                    <Link
+                        href="/auth/forgot-password"
+                        className="inline-flex h-9 w-full items-center justify-center gap-2 rounded-xl px-4 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    >
+                        <ArrowLeft className="size-4" />
+                        Try Another Email
+                    </Link>
                 </div>
             </AuthCard>
         );
@@ -99,41 +107,44 @@ export default function ForgotPasswordForm() {
                 <FieldGroup>
                     <Field data-invalid={!!errors.email}>
                         <FieldLabel htmlFor="forgot-email">Email</FieldLabel>
+
                         <Input
                             id="forgot-email"
                             type="email"
                             placeholder="you@example.com"
                             autoComplete="email"
                             aria-invalid={!!errors.email}
+                            disabled={isSubmitting}
                             {...register("email")}
                         />
+
                         <FieldError errors={[errors.email]} />
                     </Field>
 
+                    {/* Send Reset Link */}
                     <Button
                         type="submit"
-                        className={"w-full"}
+                        className="w-full"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? (
                             <>
                                 <Loader2 className="size-4 animate-spin" />
-                                Sending Link....
+                                Sending Link...
                             </>
                         ) : (
-                            <>Send Reset Link</>
+                            "Send Reset Link"
                         )}
                     </Button>
 
-                    <Button variant={"ghost"} className={"w-full flex"}>
-                        <Link
-                            href={"/auth/login"}
-                            className="flex items-center justify-center gap-2"
-                        >
-                            <ArrowLeft className="size-4" />
-                            Back To Sign In
-                        </Link>
-                    </Button>
+                    {/* Back To Sign In */}
+                    <Link
+                        href="/auth/login"
+                        className="inline-flex h-9 w-full items-center justify-center gap-2 rounded-xl px-4 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    >
+                        <ArrowLeft className="size-4" />
+                        Back To Sign In
+                    </Link>
                 </FieldGroup>
             </form>
         </AuthCard>

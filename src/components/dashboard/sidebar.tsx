@@ -17,7 +17,7 @@ interface SidebarProps {
         fullName: string;
         avatarUrl: string;
     };
-    subscription?:
+    subscription:
         | {
               planType: string;
               status: string | null;

@@ -66,6 +66,7 @@ export const subscriptions = pgTable("subscriptions", {
     id: uuid("id").defaultRandom().primaryKey(),
 
     profileId: uuid("profile_id")
+        .unique()
         .notNull()
         .references(() => profiles.id, {
             onDelete: "cascade",
